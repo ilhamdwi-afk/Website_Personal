@@ -1,0 +1,47 @@
+<script>
+function performSearch() {
+    // Capture the values from the input fields
+    const bahan1 = document.getElementById('search-input-1').value;
+    const bahan2 = document.getElementById('search-input-2').value;
+    const bahan3 = document.getElementById('search-input-3').value;
+    const bahan4 = document.getElementById('search-input-4').value;
+    const bahan5 = document.getElementById('search-input-5').value;
+
+    // Combine keywords into an array
+    let keywords = [bahan1, bahan2, bahan3, bahan4, bahan5].filter(keyword => keyword !== "");
+
+    // Display search results (for demo purposes)
+    const resultsDiv = document.getElementById('search-results');
+    if (keywords.length > 0) {
+        resultsDiv.innerHTML = `<p>Searching for: ${keywords.join(", ")}</p>`;
+    } else {
+        resultsDiv.innerHTML = "<p>No keywords entered!</p>";
+    }
+    // Create a FormData object to send data via AJAX
+    let formData = new FormData();
+    formData.append('bahan1', bahan1);
+    formData.append('bahan2', bahan2);
+    formData.append('bahan3', bahan3);
+    formData.append('bahan4', bahan4);
+    formData.append('bahan5', bahan5);
+
+     // AJAX request to PHP file
+    fetch('search_recipes.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        // Append search results to the "Searching for" text
+        resultsDiv.innerHTML += data;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
+
+
+    // Here you can add the logic to perform an actual search or filter data
+    // E.g., make an API call, query a database, or filter items on the page.
+}
+</script>
